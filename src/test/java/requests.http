@@ -1,0 +1,67 @@
+### Test root endpoint
+GET http://localhost:7076/api/v1/
+###
+
+
+### Get all resources
+GET http://localhost:7076/api/v1/hotels
+###
+
+
+
+### Create single resource
+POST http://localhost:7076/api/v1/hotels
+Content-Type: application/json
+
+{
+  "name": "Hotel 4",
+  "address": "Hotelgade 4"
+}
+###
+
+
+
+
+### Get specific rescource by ID (replace 1 with actual ID)
+GET http://localhost:7076/api/v1/hotels/1
+###
+
+
+### Update resource by ID (replace 1 with actual ID)
+PUT http://localhost:7076/api/v1/hotels/1
+Content-Type: application/json
+
+{
+  "name": "opdateret hotelnavn",
+  "address": "Ny hoteladresse"
+}
+###
+
+
+
+### Delete resource by ID (replace 1 with actual ID)
+DELETE http://localhost:7076/api/v1/hotels/3
+###
+
+### Henter alle rooms for et hotel
+GET http://localhost:7076/api/v1/hotels/1/rooms
+###
+
+### Tilføjer et room til et hotel
+POST http://localhost:7076/api/v1/hotels/1/rooms
+Content-Type: application/json
+
+{
+  "number": 2,
+  "price": 120.0
+}
+###
+
+### Sletter et rum
+DELETE http://localhost:7076/api/v1/hotels/1/rooms/1
+Content-Type: application/json
+
+{
+
+}
+###
