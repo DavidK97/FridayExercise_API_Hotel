@@ -48,7 +48,7 @@ GET http://localhost:7076/api/v1/hotels/1/rooms
 ###
 
 ### Tilføjer et room til et hotel
-POST http://localhost:7076/api/v1/hotels/1/rooms
+POST http://localhost:7076/api/v1/hotels/4/rooms
 Content-Type: application/json
 
 {

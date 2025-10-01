@@ -9,10 +9,11 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 
-public class HotelDAO implements HotelInterface {
+public class HotelAndRoomDAO implements HotelInterface {
     private EntityManagerFactory emf;
 
-    public HotelDAO(EntityManagerFactory emf) {
+    // Dependency injection, hjælper os når vi skal teste klassens metoder
+    public HotelAndRoomDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
 
@@ -23,6 +24,8 @@ public class HotelDAO implements HotelInterface {
 
             List<HotelDTO> hotelDTOs = HotelDTO.toDTOList(hotels);
             return hotelDTOs;
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not retrieve hotels from database", e);
         }
     }
 

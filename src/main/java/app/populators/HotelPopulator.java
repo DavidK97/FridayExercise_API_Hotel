@@ -1,9 +1,8 @@
 package app.populators;
 
 import app.config.HibernateConfig;
-import app.daos.HotelDAO;
+import app.daos.HotelAndRoomDAO;
 import app.dtos.HotelDTO;
-import app.dtos.RoomDTO;
 import app.entities.Hotel;
 import app.entities.Room;
 import jakarta.persistence.EntityManagerFactory;
@@ -12,10 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotelPopulator {
-    EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-    HotelDAO hotelDAO = new HotelDAO(emf);
 
-    public List<HotelDTO> populateHotels () {
+    public static List<HotelDTO> populateHotels (HotelAndRoomDAO hotelDAO) {
         List<HotelDTO> hotelDTOS = new ArrayList<>();
         List<Hotel> hotels = new ArrayList<>();
 

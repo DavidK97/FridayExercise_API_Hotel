@@ -7,8 +7,8 @@ import io.javalin.apibuilder.EndpointGroup;
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class HotelRoutes {
-    HotelController hotelController = new HotelController();
-    private RoomController roomController = new RoomController();
+    private final HotelController hotelController = new HotelController();
+    private final RoomController roomController = new RoomController();
 
     public EndpointGroup getHotelRoutes () {
         return () -> {

@@ -2,19 +2,15 @@ package app;
 
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
-import app.daos.HotelDAO;
-import app.dtos.HotelDTO;
+import app.daos.HotelAndRoomDAO;
 import app.populators.HotelPopulator;
 import io.javalin.Javalin;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        HotelDAO hotelDAO = new HotelDAO(emf);
+        HotelAndRoomDAO hotelDAO = new HotelAndRoomDAO(emf);
         HotelPopulator hotelPopulator = new HotelPopulator();
         hotelPopulator.populateHotels();
 

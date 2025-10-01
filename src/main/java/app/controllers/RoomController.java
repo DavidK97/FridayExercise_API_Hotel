@@ -1,19 +1,16 @@
 package app.controllers;
 
 import app.config.HibernateConfig;
-import app.daos.HotelDAO;
+import app.daos.HotelAndRoomDAO;
 import app.dtos.HotelDTO;
-import app.dtos.RoomDTO;
-import app.entities.Hotel;
 import app.entities.Room;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManagerFactory;
-import org.jetbrains.annotations.NotNull;
 
 public class RoomController {
     private final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-    public HotelDAO hotelDAO = new HotelDAO(emf);
+    public HotelAndRoomDAO hotelDAO = new HotelAndRoomDAO(emf);
 
 
     public void createRoom(Context ctx) {

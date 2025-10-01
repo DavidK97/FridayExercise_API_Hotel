@@ -1,7 +1,7 @@
 package app.controllers;
 
 import app.config.HibernateConfig;
-import app.daos.HotelDAO;
+import app.daos.HotelAndRoomDAO;
 import app.dtos.HotelDTO;
 import app.dtos.RoomDTO;
 import app.entities.Hotel;
@@ -15,26 +15,30 @@ import java.util.List;
 
 public class HotelController {
     private final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-    public HotelDAO hotelDAO = new HotelDAO(emf);
+    public HotelAndRoomDAO hotelDAO = new HotelAndRoomDAO(emf);
 
     private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
     private static final Logger debugLogger = LoggerFactory.getLogger("app");
 
-
-
+//TODO håndtering af fejl? Globalt eller lokalt?
     public void getAllHotels(Context ctx) {
-        // 1. Hent fra DB
-        List<HotelDTO> hotelDTOList = hotelDAO.getAllHotels();
+        try {
+            // 1. Hent fra DB
+            List<HotelDTO> hotelDTOList = hotelDAO.getAllHotels();
 
-        // 2. Send til klient
-        if (!hotelDTOList.isEmpty()) {
-            ctx.status(HttpStatus.OK); // 200
-            ctx.json(hotelDTOList);
-            logger.info("Fetched all Hotels, count: " + hotelDTOList.size());
-        } else {
-            ctx.status(HttpStatus.NOT_FOUND); // 404
-            ctx.result("Error retrieving hotels");
-            logger.warn("Hotels could not be retrieved");
+            // 2. Send til klient
+            if (!hotelDTOList.isEmpty()) {
+                ctx.status(HttpStatus.OK); // 200
+                ctx.json(hotelDTOList);
+                logger.info("Fetched all Hotels, count: " + hotelDTOList.size());
+            } else {
+                ctx.status(HttpStatus.NOT_FOUND); // 404
+                ctx.result("Error retrieving hotels");
+                logger.warn("Hotels could not be retrieved");
+            }
+        } catch (Exception e) {
+            logger.error("Error retrieving hotels", e);
+            throw e;
         }
     }
 

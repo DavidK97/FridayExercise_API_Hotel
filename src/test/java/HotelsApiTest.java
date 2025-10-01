@@ -1,7 +1,8 @@
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
-import app.daos.HotelDAO;
+import app.daos.HotelAndRoomDAO;
 import app.dtos.HotelDTO;
+import app.entities.Hotel;
 import app.exceptions.ApiException;
 import app.populators.HotelPopulator;
 import io.javalin.Javalin;
@@ -20,9 +21,9 @@ import static org.hamcrest.Matchers.*;
 
 public class HotelsApiTest {
     private static Javalin app;
-    private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryForTest();
-    HotelDAO hotelDAO = new HotelDAO(emf);
-    HotelPopulator hotelPopulator = new HotelPopulator();
+    private static EntityManagerFactory emf;
+    private static HotelAndRoomDAO hotelAndRoomDAO;
+
 
     HotelDTO h1;
     HotelDTO h2;
@@ -30,6 +31,8 @@ public class HotelsApiTest {
 
     @BeforeAll
     public static void setup() {
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
+        hotelAndRoomDAO = new HotelAndRoomDAO(emf);
         app = ApplicationConfig.startServer(7076);
     }
 
@@ -54,7 +57,7 @@ public class HotelsApiTest {
         }
 
 
-        List<HotelDTO> hotelDTOList = hotelPopulator.populateHotels();
+        List<HotelDTO> hotelDTOList = HotelPopulator.populateHotels(hotelAndRoomDAO);
         if (hotelDTOList.size() == 3) {
             h1 = hotelDTOList.get(0);
             h2 = hotelDTOList.get(1);
@@ -67,6 +70,7 @@ public class HotelsApiTest {
     @Test
     public void testGetAllHotels() {
         RestAssured.baseURI = "http://localhost:7076/api/v1";
+
 
         given()
                 .when()
@@ -120,10 +124,13 @@ public class HotelsApiTest {
 
         given()
                 .body(newHotelJson)
+
                 .when()
                 .post("/hotels")
+
                 .then()
                 .statusCode(201)
+                .body("id", is(4))
                 .body("name", is("Hotel 4"))
                 .body("address", is("Hotelgade 4"));
     }
@@ -140,7 +147,6 @@ public class HotelsApiTest {
     """;
 
         given()
-                .header("Content-Type", "application/json")
                 .body(updatedHotelJson)
                 .when()
                 .put("/hotels/1")

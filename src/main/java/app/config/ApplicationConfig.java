@@ -25,11 +25,12 @@ public class ApplicationConfig {
         app.start(port);
 
 
-        // Exceptions håndtering
+        // Exception håndtering for forkert Json-input
         app.exception(IllegalStateException.class, (e, ctx) -> {
             ctx.status(400).json(Map.of("error", "Invalid input, try again"));
             logger.error("IllegalStateException: " + e.getMessage(), e);
         });
+
 
         app.exception(Exception.class, (e, ctx) -> {
             ctx.status(500).json(Map.of("error", "Internal server error, try again"));
@@ -41,6 +42,7 @@ public class ApplicationConfig {
             logger.info("Request: " + ctx.method() + ctx.path() + " Body: " + ctx.body());
         });
 
+        // Logging til responses
         app.after(ctx -> {
             logger.info("Response: " + ctx.method() + ctx.path() + " Status: " + ctx.status() + " Body: " + ctx.result());
         });
