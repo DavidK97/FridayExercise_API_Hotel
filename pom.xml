@@ -21,6 +21,7 @@
         <testcontainers.version>1.18.0</testcontainers.version>
         <hikari.version>5.1.0</hikari.version>
         <javalin.version>6.3.0</javalin.version>
+        <jbcrypt.version>0.4</jbcrypt.version>
 
         <!-- DATABASE PROJECT NAME ON SERVER  -->
         <db.name>hotels</db.name>
@@ -139,6 +140,11 @@
             <version>1.5.16</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>${jbcrypt.version}</version>
+        </dependency>
 
+    </dependencies>
 </project>

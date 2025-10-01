@@ -2,6 +2,8 @@ package app.config;
 
 import app.entities.Hotel;
 import app.entities.Room;
+import app.security.entities.Role;
+import app.security.entities.User;
 import app.utils.Utils;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -43,6 +45,8 @@ public class HibernateConfig {
     private static void getAnnotationConfiguration(Configuration configuration) {
         configuration.addAnnotatedClass(Hotel.class);
         configuration.addAnnotatedClass(Room.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Role.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
@@ -75,7 +79,7 @@ public class HibernateConfig {
 
     private static Properties setBaseProperties(Properties props) {
         props.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-        props.put("hibernate.hbm2ddl.auto", "create");  // set to "update" when in production
+        props.put("hibernate.hbm2ddl.auto", "create-drop");  // set to "update" when in production
         props.put("hibernate.current_session_context_class", "thread");
         props.put("hibernate.show_sql", "false");
         props.put("hibernate.format_sql", "false");
