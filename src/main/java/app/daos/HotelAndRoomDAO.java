@@ -117,6 +117,7 @@ public class HotelAndRoomDAO implements HotelInterface {
         }
     }
 
+
     // Fungerer ikke med Cascade.remove, derfor giver den fejl: "unique-constraint" da room peger på et hotelId der ikke længere eksisterer
     @Override
     public boolean deleteHotel(int id) {

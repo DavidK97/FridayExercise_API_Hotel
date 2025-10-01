@@ -12,7 +12,7 @@ public class Main {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         HotelAndRoomDAO hotelDAO = new HotelAndRoomDAO(emf);
         HotelPopulator hotelPopulator = new HotelPopulator();
-        hotelPopulator.populateHotels();
+        HotelPopulator.populateHotels(hotelDAO);
 
 
         Javalin app = ApplicationConfig.startServer(7076);
