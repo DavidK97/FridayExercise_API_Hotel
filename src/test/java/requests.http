@@ -60,8 +60,4 @@ Content-Type: application/json
 ### Sletter et rum
 DELETE http://localhost:7076/api/v1/hotels/1/rooms/1
 Content-Type: application/json
-
-{
-
-}
 ###

@@ -1,6 +1,9 @@
 package app.config;
 
 import app.routes.Routes;
+import app.security.controllers.ISecurityController;
+import app.security.controllers.SecurityController;
+import app.security.routes.SecurityRoutes;
 import io.javalin.Javalin;
 import io.javalin.config.JavalinConfig;
 import org.slf4j.Logger;
@@ -8,16 +11,22 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+
+
 public class ApplicationConfig {
     private static Routes routes = new Routes();
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
+    private static final ISecurityController securityController = SecurityController.getInstance();
 
     public static void configuration (JavalinConfig config) {
         config.showJavalinBanner = false; // Javalin Banner printes ikke i konsol
         config.bundledPlugins.enableRouteOverview("/routes");  // Endpoint hvor man kan se routes
         config.router.contextPath = "/api/v1"; // Base Path for alle endpoints
         config.router.apiBuilder(routes.getRoutes()); //Registrerer alle routes
+        config.router.apiBuilder(new SecurityRoutes().getSecurityRoute);
+        config.router.apiBuilder(new SecurityRoutes().getSecuredRoutes());
     }
+
 
     public static Javalin startServer (int port) {
         routes = new Routes();
@@ -47,8 +56,9 @@ public class ApplicationConfig {
             logger.info("Response: " + ctx.method() + ctx.path() + " Status: " + ctx.status() + " Body: " + ctx.result());
         });
 
-
-
+        // Alle endpoints skal igennem nedenstående metoder inden andre endpoints kan nås
+        app.beforeMatched(securityController.authenticate()); // check if there is a valid token in the header
+        app.beforeMatched(securityController.authorize()); // check if the user has the required role
 
         return app;
     }

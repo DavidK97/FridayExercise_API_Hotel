@@ -2,6 +2,7 @@ package app.routes;
 
 import app.controllers.HotelController;
 import app.controllers.RoomController;
+import app.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -12,17 +13,17 @@ public class HotelRoutes {
 
     public EndpointGroup getHotelRoutes () {
         return () -> {
-            get("/", ctx -> hotelController.getAllHotels(ctx));
-            get("/{id}", hotelController::getHotelById);
-            get("/{id}/rooms", hotelController::getRoomsForHotel);
+            get("/", ctx -> hotelController.getAllHotels(ctx), Role.ANYONE);
+            get("/{id}", hotelController::getHotelById, Role.ANYONE);
+            get("/{id}/rooms", hotelController::getRoomsForHotel, Role.ANYONE);
 
-            post("/{id}/rooms", roomController::createRoom);
-            post("/", hotelController::createHotel);
+            post("/{id}/rooms", roomController::createRoom, Role.USER, Role.ADMIN);
+            post("/", hotelController::createHotel, Role.USER, Role.ADMIN);
 
-            put("/{id}", hotelController::updateHotel);
+            put("/{id}", hotelController::updateHotel, Role.ADMIN);
 
-            delete("/{id}", hotelController::deleteHotel);
-            delete("/{id}/rooms/{roomId}", roomController::removeRoom);
+            delete("/{id}", hotelController::deleteHotel, Role.ADMIN);
+            delete("/{id}/rooms/{roomId}", roomController::removeRoom, Role.ADMIN);
         };
     }
 }

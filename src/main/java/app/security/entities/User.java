@@ -23,8 +23,8 @@ public class User implements ISecurityUser {
     private String username;
     private String password;
 
-    @Builder.Default
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles", // Navn på Joining table
             joinColumns = @JoinColumn(name = "username"), // Denne side af relationen: User
@@ -33,13 +33,13 @@ public class User implements ISecurityUser {
     private Set<Role> roles = new HashSet<>();
 
 
-    // Kontruktør til at hashe passwords
+    // Konstruktør til at hashe passwords
     public User(String username, String password) {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
         this.username = username;
         this.password = hashed;
+        this.roles = new HashSet<>();
     }
-
 
 
     @Override
@@ -61,6 +61,4 @@ public class User implements ISecurityUser {
         this.roles.remove(role);
         role.getUsers().remove(this);
     }
-
-
 }

@@ -5,6 +5,7 @@ import app.security.entities.Role;
 import app.security.entities.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityNotFoundException;
 
 public class SecurityDAO implements ISecurityDAO {
     EntityManagerFactory emf;
@@ -40,11 +41,27 @@ public class SecurityDAO implements ISecurityDAO {
 
     @Override
     public Role createRole(String rolename) {
-        return null;
+        try(EntityManager em = emf.createEntityManager()){
+            Role role = new Role(rolename);
+            em.getTransaction().begin();
+            em.persist(role);
+            em.getTransaction().commit();
+            return role;
+        }
     }
 
     @Override
-    public User addUserRole(String username, String role) {
-        return null;
+    public User addUserRole(String username, String newRole) throws EntityNotFoundException {
+        try(EntityManager em = emf.createEntityManager()){
+            User foundUser = em.find(User.class, username);
+            Role foundRole = em.find(Role.class, newRole);
+            if(foundRole == null || foundUser == null){
+                throw new EntityNotFoundException("User or Role does not exist");
+            }
+            em.getTransaction().begin();
+            foundUser.addRole(foundRole);
+            em.getTransaction().commit();
+            return foundUser;
+        }
     }
 }

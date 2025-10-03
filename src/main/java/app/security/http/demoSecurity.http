@@ -1,0 +1,29 @@
+###
+POST http://{{url}}/auth/register
+
+{
+    "username": "user1",
+    "password": "pass123"
+}
+###
+
+
+###
+POST http://{{url}}/auth/login
+
+{
+    "username": "David",
+    "password": "kode123"
+}
+
+###
+GET http://{{url}}/protected/admin_demo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJcIkRhdmlkIEtqw6ZyZ2FhcmRcIiIsInN1YiI6IkRhdmlkIiwiZXhwIjoxNzU5NDk0NzA3LCJyb2xlcyI6IkFkbWluIiwidXNlcm5hbWUiOiJEYXZpZCJ9.lV7Uadu3YmsyzmqM5vywUac5ckI_Cfs8OVLtgV6uO4A
+###
+
+
+### Sletter et rum. Kræver Admin role
+DELETE http://localhost:7076/api/v1/hotels/1/rooms/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJcIkRhdmlkIEtqw6ZyZ2FhcmRcIiIsInN1YiI6IkRhdmlkIiwiZXhwIjoxNzU5NDk0NzA3LCJyb2xlcyI6IkFkbWluIiwidXNlcm5hbWUiOiJEYXZpZCJ9.lV7Uadu3YmsyzmqM5vywUac5ckI_Cfs8OVLtgV6uO4A
+###
